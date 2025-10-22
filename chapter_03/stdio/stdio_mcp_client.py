@@ -1,8 +1,11 @@
+import logging
 from contextlib import AsyncExitStack
 from typing import Any
 
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
+
+logger = logging.getLogger(__name__)
 
 
 class MCPClient:
@@ -50,13 +53,27 @@ class MCPClient:
         await self._session.initialize()
         self._connected = True
 
-    async def get_available_tools(self) -> list[Any]:
-        """Retrieve tools that the server has made available."""
-        pass
-
     async def use_tool(self, tool_name: str, tool_args: list | None = None):
         """Given a tool name and optionally a list of argumnents, execute the tool."""
         pass
+
+    async def get_available_tools(self) -> list[dict[str, Any]]:
+        """Retrieve tools that the server has made available."""
+        if not self._connected:
+            raise RuntimeError("Client not connected to a server")
+
+        tools_result = await self._session.list_tools()
+        if not tools_result.tools:
+            logger.warning("No tools found on server")
+        available_tools = [
+            {
+                "name": tool.name,
+                "description": tool.description,
+                "input_schema": tool.inputSchema,
+            }
+            for tool in tools_result.tools
+        ]
+        return available_tools
 
     async def disconnect(self) -> None:
         """Clean up any resources."""
@@ -64,7 +81,3 @@ class MCPClient:
             await self._exit_stack.aclose()
             self._connected = False
             self._session = None
-            
-if __name__ == '__main__':
-    print("Ankush")
-            

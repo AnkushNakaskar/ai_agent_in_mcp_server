@@ -1,13 +1,10 @@
-from openai import OpenAI
-import httpx
 import asyncio
 from pathlib import Path
 
-from chapter_03.stdio.stdio_mcp_client import MCPClient
-from readkey import get_token
 import httpx
 from openai import OpenAI
 
+from chapter_03.stdio.stdio_mcp_client import MCPClient
 from readkey import get_token
 
 api_key= str(get_token())
