@@ -1,32 +1,41 @@
-import os
+from openai import OpenAI
+import httpx
 
-from anthropic import Anthropic
-from dotenv import load_dotenv
+from readkey import get_token
+import httpx
+from openai import OpenAI
 
-load_dotenv()
+from readkey import get_token
 
-LLM_API_KEY = os.environ["LLM_API_KEY"]
-anthropic_client = Anthropic(api_key=LLM_API_KEY)
+api_key= str(get_token())
+print("API key is : ")
+print(api_key)
+http_client = httpx.Client(verify=False)
+client = OpenAI(base_url="https://godric.nixy.stg-drove.phonepe.nb6/v1", api_key=api_key, http_client=http_client)
+
+def call_open_ai_llm(prompts):
+    completion = client.chat.completions.create(
+        model="global:LLM_GLOBAL_GPT_4O_MINI_STG",
+        store=True,
+        messages=[
+    {
+        "role": "user",
+        "content": prompts
+    }
+]
+    )
+    return completion.choices[0].message;
+
+
 
 print("Welcome to your AI Assistant. Type 'goodbye' to quit.")
-def main():
-    while True:
-        prompt = input("You: ")
-        if prompt.lower() == "goodbye":
-            print("AI Assistant: Goodbye!")
-            break
-        message = anthropic_client.messages.create(
-            max_tokens=4096,
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt,
-                }
-            ],
-            model="claude-sonnet-4-0",
-        )
-        for response in message.content:
-            print(f"Assistant: {response.text}")
 
-if __name__ == "__main__":
-    main()
+while True:
+    prompt = input("You: ")
+    if prompt.lower() == "goodbye":
+        print("AI Assistant: Goodbye!")
+        break
+
+    message =call_open_ai_llm(prompt)
+    if message and message.content :
+        print(f"Assistant: {message.content}")
