@@ -1,0 +1,2 @@
+brew install uv
+pip3 install mcp

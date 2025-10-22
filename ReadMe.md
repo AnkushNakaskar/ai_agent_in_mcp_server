@@ -6,3 +6,4 @@
 * One of the engineer in anthropic was facing problem like switching from anthropic desktop and IDE so this protocol is design
 * For example on how to use it, visit chapter by chapter
   * Each chapter explain the core concept
+* You need to install below [requirement.txt](requirement.txt) to execute the example 

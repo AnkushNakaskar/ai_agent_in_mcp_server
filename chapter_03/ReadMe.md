@@ -7,9 +7,10 @@
 * Host application : [mcp_agent.py](mcp_agent.py) 
   * It is simple application with just completion of messages
   * You can see, we are initiating the mcp client before we start with prompt and end the connection
-  * Check the output pasted below : 
+  * Check the output pasted below :
   ```
   /opt/homebrew/bin/python3 /Users/ankush.nakaskar/Office/newCode/personal_projects/ai_agent_in_mcp_server/chapter_03/mcp_agent.py
+  
   Current directory (using os): /Users/ankush.nakaskar/Office/newCode/personal_projects/ai_agent_in_mcp_server
   /Users/ankush.nakaskar/Office/newCode/personal_projects/ai_agent_in_mcp_server/api_key.txt
   <token>
