@@ -1,6 +1,6 @@
 ### Model context protocol implementation : Chapter 3
 * This folder explain the model context protocol chapter 3. 
-* MCP explain the interface between Host application and LLM as explain in [MainReadMe.md](/Users/ankush.nakaskar/Office/newCode/personal_projects/ai_agent_in_mcp_server/ReadMe.md)
+* MCP explain the interface between Host application and LLM as explain in [MainReadMe.md](../ReadMe.md)
 * There are two ways to connect to MCP server : local client and remote server
   * LocalClient example : [stdio](stdio)
   * Http client example : [http](http)
