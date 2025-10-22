@@ -19,6 +19,8 @@ class MCPClient:
         env_vars: dict[str, str] = None,
     ) -> None:
         """Initialize the MCPClient with server connection parameters."""
+        print("Env server_args ...")
+        print(server_args)
         self.name = name
         self.command = command
         self.server_args = server_args

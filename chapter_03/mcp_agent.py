@@ -4,7 +4,7 @@ from pathlib import Path
 import httpx
 from openai import OpenAI
 
-from chapter_03.stdio.stdio_mcp_client import MCPClient
+from chapter_03.stdio import stdio_mcp_client
 from readkey import get_token
 
 api_key= str(get_token())
@@ -14,14 +14,14 @@ http_client = httpx.Client(verify=False)
 client = OpenAI(base_url="https://godric.nixy.stg-drove.phonepe.nb6/v1", api_key=api_key, http_client=http_client)
 
 
-mcp_client = MCPClient(
+mcp_client = stdio_mcp_client.MCPClient(
     name="calculator_server_connection",
     command="uv",
     server_args=[
         "--directory",
         str(Path(__file__).parent.parent.resolve()),
         "run",
-        "calculator_server.py",
+        "chapter_03/calculator_server.py",
     ],
 )
 
@@ -51,18 +51,6 @@ while True:
         break
 
     message =call_open_ai_llm(prompt)
-    # message = anthropic_client.messages.create(
-    #     max_tokens=1024,
-    #     system="You are a helpful assistant.",
-    #     messages=[
-    #         {
-    #             "role": "user",
-    #             "content": prompt,
-    #         }
-    #     ],
-    #     model="claude-sonnet-4-0",
-    # )
-    # print(message)
     if message and message.content :
         print(f"Assistant: {message.content}")
 
