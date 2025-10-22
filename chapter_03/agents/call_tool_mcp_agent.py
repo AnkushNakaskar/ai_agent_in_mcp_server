@@ -28,10 +28,11 @@ mcp_client = stdio_mcp_client.MCPClient(
 print("Welcome to your AI Assistant. Type 'goodbye' to quit.")
 
 
-def call_open_ai_llm(prompts):
+def call_open_ai_llm(prompts,available_tools):
     completion = client.chat.completions.create(
         model="global:LLM_GLOBAL_GPT_4O_MINI_STG",
         store=True,
+        tools=available_tools,
         messages=[
     {
         "role": "user",
@@ -39,7 +40,12 @@ def call_open_ai_llm(prompts):
     }
 ]
     )
-    return completion.choices[0].message;
+    functions = []
+    for choice in completion.choices:
+        for completion_message in choice.message.tool_calls:
+            functions.append(completion_message.function);
+    return functions;
+
 
 
 
@@ -55,9 +61,8 @@ async def main():
         if prompt.lower() == "goodbye":
             print("AI Assistant: Goodbye!")
             break
-        message =call_open_ai_llm(prompt)
-        if message and message.content:
-            print(f"Assistant: {message.content}")
+        message =call_open_ai_llm(prompt,available_tools=available_tools)
+        print(f"Assistant: {message}")
     await mcp_client.disconnect()
 
 

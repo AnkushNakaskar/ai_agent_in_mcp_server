@@ -42,20 +42,6 @@ def call_open_ai_llm(prompts):
     return completion.choices[0].message;
 
 
-
-
-while True:
-    prompt = input("You: ")
-    if prompt.lower() == "goodbye":
-        print("AI Assistant: Goodbye!")
-        break
-
-    message =call_open_ai_llm(prompt)
-    if message and message.content :
-        print(f"Assistant: {message.content}")
-
-
-
 async def main():
     """Main async function to run the assistant."""
     await mcp_client.connect()
