@@ -67,7 +67,7 @@ def call_open_ai_llm(prompts, available_tools):
         for completion_message in choice.message.tool_calls:
             functions.append(completion_message.function);
     return functions;
-
+# You need to modify the values in function call, you can refer the available tool print and actual function calls
 
 async def main():
     """Main async function to run the assistant."""
