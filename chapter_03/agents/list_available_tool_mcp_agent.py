@@ -21,7 +21,7 @@ mcp_client = stdio_mcp_client.MCPClient(
         "--directory",
         str(Path(__file__).parent.parent.resolve()),
         "run",
-        "chapter_03/calculator_server.py",
+        "calculator_server.py",
     ],
 )
 
@@ -59,6 +59,9 @@ while True:
 async def main():
     """Main async function to run the assistant."""
     await mcp_client.connect()
+    available_tools = await mcp_client.get_available_tools()
+    print(f"Available tools: {", ".join([tool['name'] for tool in available_tools])}")
+
     while True:
         prompt = input("You: ")
         if prompt.lower() == "goodbye":
