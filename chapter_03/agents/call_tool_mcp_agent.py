@@ -60,7 +60,6 @@ async def main():
     openai_functions = []
     for available_tool in available_tools:
         available_tool['parameters'] = available_tool['input_schema']
-
         openai_functions.append({
             "type":"function",
             "function":available_tool
@@ -89,7 +88,7 @@ async def main():
                 tool_results.append(
                     {
                         "type": "text",
-                        "text": "Result is calculated".join(tool_result),
+                        "text": "Result is calculated functional task for input {input} are {result} ".format(input=prompt, result=str(tool_result)),
                     }
                 )
                 print("Printing result ::: ")
@@ -107,3 +106,5 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+    # print(">>>>")
+    # print("Result is calculated with result of "+("tool_result"))

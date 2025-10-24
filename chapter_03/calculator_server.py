@@ -53,7 +53,7 @@ async def add(a: float, b: float, ctx: Context[ServerSession, None]) -> str:
     """
     result = a + b
     await ctx.info(f"Adding {a} and {b} = {result}")
-    return f"{a} + {b} = {result}"
+    return f"{result}"
 
 
 if __name__ == "__main__":
