@@ -31,29 +31,7 @@ def call_open_ai_llm(prompts, available_tools):
     completion = client.chat.completions.create(
         model="global:LLM_GLOBAL_GPT_4O_MINI_STG",
         store=True,
-        tools=[{
-            "type": "function",
-            "function": {
-                "name": "Adding",
-                "description": "Adding two values",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "a": {
-                            "type": "number",
-                            "description":
-                                "Aurgument A",  # 5
-                        },
-                        "b": {
-                            "type": "number",
-                            "description":
-                                "Aurgument B"  # 6
-                        }
-                    }
-
-                }
-            }
-        }],
+        tools=available_tools,
         messages=prompts
     )
     print(completion)
@@ -71,6 +49,14 @@ async def main():
 
     print(f"Available tools: {", ".join([tool['name'] for tool in available_tools])}")
     print(available_tools)
+    openai_functions = []
+    for available_tool in available_tools:
+        available_tool['parameters'] = available_tool['input_schema']
+
+        openai_functions.append({
+            "type":"function",
+            "function":available_tool
+        })
 
     while True:
         prompt = input("You: ")
@@ -81,7 +67,8 @@ async def main():
         while True:
             print("Conversation messages :::")
             print(conversation_messages)
-            llm_functions = call_open_ai_llm(conversation_messages, available_tools=available_tools)
+            print(openai_functions)
+            llm_functions = call_open_ai_llm(conversation_messages, available_tools=openai_functions)
             print(f"Assistant: {llm_functions}")
             tool_results = []
             for llm_function in llm_functions:
@@ -99,9 +86,11 @@ async def main():
                 )
                 print("Printing result ::: ")
                 print(tool_results)
+                break;
             conversation_messages.append(
                 {"role": "user", "content": tool_results}
             )
+            break;
 
 
     await mcp_client.disconnect()
