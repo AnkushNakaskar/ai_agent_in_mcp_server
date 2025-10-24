@@ -79,6 +79,8 @@ async def main():
             break
         conversation_messages = [{"role": "user", "content": prompt}]
         while True:
+            print("Conversation messages :::")
+            print(conversation_messages)
             llm_functions = call_open_ai_llm(conversation_messages, available_tools=available_tools)
             print(f"Assistant: {llm_functions}")
             tool_results = []
@@ -91,10 +93,8 @@ async def main():
                 print(tool_result)
                 tool_results.append(
                     {
-                        "tool_call_id": llm_function.id,
-                        "role": "tool",
-                        "name": llm_function.function.name,
-                        "content": "\n".join(tool_result),
+                        "type": "text",
+                        "text": "\n".join(tool_result),
                     }
                 )
                 print("Printing result ::: ")
@@ -102,6 +102,7 @@ async def main():
             conversation_messages.append(
                 {"role": "user", "content": tool_results}
             )
+
 
     await mcp_client.disconnect()
 
