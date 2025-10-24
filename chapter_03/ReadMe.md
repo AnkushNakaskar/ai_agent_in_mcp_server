@@ -4,6 +4,11 @@
 * There are two ways to connect to MCP server : local client and remote server
   * LocalClient example : [stdio](stdio)
   * Http client example : [http](http)
+* MCP client initialisation : 
+  * you can see the various input params like ``` uv : this is a command executable package , you can try :::  uv run chapter_03/calculator_server.py ``` 
+    * Read about the UV : https://www.datacamp.com/tutorial/python-uv
+  * Other params are support to execute the cmd like ```run calculator_server.py```
+  * This ``` calculator_server.py ``` is actual code executor.
 * Host application : [plain_mcp_agent.py](agents/plain_mcp_agent.py) 
   * It is simple application with just completion of messages
   * You can see, we are initiating the mcp client before we start with prompt and end the connection
