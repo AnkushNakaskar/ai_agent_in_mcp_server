@@ -66,7 +66,9 @@ class MCPClient:
         tool_call_result = await self._session.call_tool(
             name=tool_name, arguments=arguments
         )
-        logger.debug(f"Calling tool {tool_name} with arguments {arguments}")
+        print(f"Calling tool {tool_name} with arguments {arguments}")
+
+        print(f"Calling with result {tool_call_result}")
 
         results = []
         if tool_call_result.content:

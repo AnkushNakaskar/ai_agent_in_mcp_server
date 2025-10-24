@@ -1,6 +1,6 @@
 import asyncio
 from pathlib import Path
-
+import json
 import httpx
 from openai import OpenAI
 
@@ -54,18 +54,13 @@ def call_open_ai_llm(prompts, available_tools):
                 }
             }
         }],
-        messages=[
-            {
-                "role": "user",
-                "content": prompts
-            }
-        ]
+        messages=prompts
     )
     print(completion)
     functions = []
     for choice in completion.choices:
         for completion_message in choice.message.tool_calls:
-            functions.append(completion_message.function);
+            functions.append(completion_message);
     return functions;
 # You need to modify the values in function call, you can refer the available tool print and actual function calls
 
@@ -76,13 +71,38 @@ async def main():
 
     print(f"Available tools: {", ".join([tool['name'] for tool in available_tools])}")
     print(available_tools)
+
     while True:
         prompt = input("You: ")
         if prompt.lower() == "goodbye":
             print("AI Assistant: Goodbye!")
             break
-        message = call_open_ai_llm(prompt, available_tools=available_tools)
-        print(f"Assistant: {message}")
+        conversation_messages = [{"role": "user", "content": prompt}]
+        while True:
+            llm_functions = call_open_ai_llm(conversation_messages, available_tools=available_tools)
+            print(f"Assistant: {llm_functions}")
+            tool_results = []
+            for llm_function in llm_functions:
+                print(f"Assistant executing function: {llm_function}")
+                tool_result = await mcp_client.use_tool(
+                    tool_name=llm_function.function.name, arguments=json.loads(llm_function.function.arguments)
+                )
+                print("Printing result1 ::: ")
+                print(tool_result)
+                tool_results.append(
+                    {
+                        "tool_call_id": llm_function.id,
+                        "role": "tool",
+                        "name": llm_function.function.name,
+                        "content": "\n".join(tool_result),
+                    }
+                )
+                print("Printing result ::: ")
+                print(tool_results)
+            conversation_messages.append(
+                {"role": "user", "content": tool_results}
+            )
+
     await mcp_client.disconnect()
 
 
