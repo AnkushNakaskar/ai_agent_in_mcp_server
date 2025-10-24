@@ -59,3 +59,4 @@ async def add(a: float, b: float, ctx: Context[ServerSession, None]) -> str:
 if __name__ == "__main__":
     # Initialize and run the server
     mcp.run(transport="stdio")
+    # print("in main method")
